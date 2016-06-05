@@ -46,6 +46,10 @@ def fetch_previous_available_titles():
     with open("willcallclub_avail_titles.pkl") as f:
         return pickle.load(f)
 
+
+def titlelist_abbrev(arr_titles):
+    return str(map(lambda t: t[0:15], arr_titles))
+
 # Would be much nicer as a lambda use of filter()
 def differ(old, new):
     new_offerings = []
@@ -61,6 +65,11 @@ try:
 except:
     prev_avail = None
 
+print(titlelist_abbrev(prev_avail))
+
+import sys
+sys.exit(3)
+
 new_avail = fetch_fresh_available_titles(login_and_grab_roster())
 
 if prev_avail:
@@ -68,6 +77,7 @@ if prev_avail:
     if new_offerings:
         print("WE HAVE NEW OFFERINGS TO REPORT")
         print(new_offerings)
+
 
 with open("willcallclub_avail_titles.pkl", "w") as f:
     pickle.dump(new_avail, f)
