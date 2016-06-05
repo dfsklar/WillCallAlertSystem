@@ -8,6 +8,7 @@ import credentials
 # Returns the raw HTML of the roster page post-login
 def login_and_grab_roster():
     br = mechanize.Browser()
+    br.addheaders = [('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:45.0) Gecko/20100101 Firefox/45.0')]
     br.open("http://willcallclub.com/login.php")
 
     br.select_form(nr=0)
