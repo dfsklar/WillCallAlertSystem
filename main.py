@@ -1,7 +1,5 @@
 import re
 import mechanize
-# import lxml
-# from lxml import etree
 import pickle
 
 import credentials
@@ -50,7 +48,7 @@ def fetch_previous_available_titles():
 def titlelist_abbrev(arr_titles):
     return str(map(lambda t: t[0:15], arr_titles))
 
-# Would be much nicer as a lambda use of filter()
+# This differ Would be much nicer as a lambda use of filter() -- good exercise for Matt
 def differ(old, new):
     new_offerings = []
     for x in new:
@@ -63,21 +61,15 @@ prev_avail = None
 try:
     prev_avail = fetch_previous_available_titles()
 except:
-    prev_avail = None
-
-print(titlelist_abbrev(prev_avail))
-
-import sys
-sys.exit(3)
+    prev_avail = []
 
 new_avail = fetch_fresh_available_titles(login_and_grab_roster())
 
-if prev_avail:
-    new_offerings = differ(prev_avail, new_avail)
-    if new_offerings:
-        print("WE HAVE NEW OFFERINGS TO REPORT")
-        print(new_offerings)
-
+new_offerings = differ(prev_avail, new_avail)
+if new_offerings:
+    import subprocess
+    retval = subprocess.call(['/bin/sh', './report_new_offerings.sh', titlelist_abbrev(new_offerings), credentials.SMSEMAIL])
+    print("Return value from the email-alert launch: " + str(retval))
 
 with open("willcallclub_avail_titles.pkl", "w") as f:
     pickle.dump(new_avail, f)
