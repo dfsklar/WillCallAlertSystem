@@ -47,7 +47,7 @@ def fetch_previous_available_titles():
 
 
 def titlelist_abbrev(arr_titles):
-    return str(map(lambda t: t[0:15], arr_titles))
+    return str(map(lambda t: t[0:45], arr_titles))
 
 # This differ Would be much nicer as a lambda use of filter() -- good exercise for Matt
 def differ(old, new):
