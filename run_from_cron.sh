@@ -1,3 +1,3 @@
 cd /root/WillCallAlertSystem/
-find logs -atime 20 -name '*.out' -print -exec /bin/rm {} \;
+find logs \! -mtime 30 -name '*.out' -print -exec /bin/rm {} \;
 python main.py > logs/$$.out 2>&1

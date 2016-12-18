@@ -67,10 +67,23 @@ except:
 new_avail = fetch_fresh_available_titles(login_and_grab_roster())
 
 new_offerings = differ(prev_avail, new_avail)
+
 if new_offerings:
     import subprocess
-    retval = subprocess.call(['/bin/sh', './report_new_offerings.sh', titlelist_abbrev(new_offerings), credentials.SMSEMAIL])
+    titles =  titlelist_abbrev(new_offerings).replace('\'','').replace('"','')
+    retval = subprocess.call(['/bin/sh', './report_new_offerings.sh', titles, credentials.SMSEMAIL])
     print("Return value from the email-alert launch: " + str(retval))
+    new_offerings = new_offerings
+    retval = subprocess.call([
+        'curl',
+        '-X',
+        'POST',
+        '--data-urlencode',
+        'payload={"channel": "#general", "username": "webhookbot", "text": "%s", "icon_emoji": ":ghost:"}' % titles,
+        'https://hooks.slack.com/services/%s' % credentials.SLACK
+    ])
+    print("Return value from the slack webhook launch: " + str(retval))
+    
 
 with open("willcallclub_avail_titles.pkl", "w") as f:
     pickle.dump(new_avail, f)
