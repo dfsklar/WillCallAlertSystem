@@ -79,7 +79,7 @@ if new_offerings:
         '-X',
         'POST',
         '--data-urlencode',
-        'payload={"channel": "#general", "username": "webhookbot", "text": "%s", "icon_emoji": ":ghost:"}' % titles,
+        'payload={"channel": "#general", "username": "webhookbot", "text": "WILLCALL %s", "icon_emoji": ":ghost:"}' % titles,
         'https://hooks.slack.com/services/%s' % credentials.SLACK
     ])
     print("Return value from the slack webhook launch: " + str(retval))
